@@ -11,7 +11,7 @@ Proyecto de entrenamiento de un modelo ResNet18 usando Transfer Learning y Fine-
 - `predict.py`: funciones de predicción y carga de modelo.
 
 
-## Detalles sobre el notebook
+## Detalles sobre el notebook [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/OscarV123/image-classification-resnet18/blob/main/notebook/Ejercicio_de_transfer_learning_y_finetuning.ipynb)
 Dentro del archivo que contiene toda la lógica de la **Inteligencia Artificial** (`Ejercicio de transfer learning y finetuning.ipynb`) he creado tres modelos:
 1. **Perceptrón multicapa (MLP)** - Machine Learning
 2. **Modelo con transfer** learning de ResNet18 - Deep Learning
