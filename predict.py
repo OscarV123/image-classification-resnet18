@@ -23,8 +23,7 @@ def load_model_and_preprocess(model_path, classes_path, preprocess_path, device)
 
     return model, class_names, transform
 
-def predict_image(path, transform, model, device, class_names):
-    img = Image.open(path).convert("RGB")
+def predict_image(img, transform, model, device, class_names):
     x = transform(img).unsqueeze(0).to(device)
 
     with torch.no_grad():

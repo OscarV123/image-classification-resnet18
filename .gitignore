@@ -3,12 +3,14 @@ __pycache__/
 *.pyc
 
 # Pesos grandes
-artifacts/*.pt
+*.pt
+*.pth
 
 # Entornos
 .venv/
 env/
 venv/
 
-# Valido solo para macOS
+# Archivos de configuración
 .DS_Store
+Thumbs.db
