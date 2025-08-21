@@ -23,7 +23,22 @@ def load_model_and_preprocess(model_path, classes_path, preprocess_path, device)
         T.Normalize(preprocess_params['normalize_mean'], preprocess_params['normalize_std'])
     ])
 
-    state = torch.load(model_path, map_location=device)
+    try:
+        model = torch.jit.load(model_path, map_location=device)
+        model.eval()
+        return model, class_names, transform
+    except Exception as e:
+        print(f"Error al cargar model: {e}")
+        print("Cargando modelo state dict en su lugar.")
+        pass
+
+    state = torch.load(model_path, map_location=device, weights_only=False)
+    
+    if isinstance(state, dict) and "state_dict" in state:
+        state = state["state_dict"]
+    
+    state = {k.replace("model.", ""): v for k, v in state.items()}
+    
     model = build_resnet18(len(class_names))
     model.load_state_dict(state)
     model.eval()

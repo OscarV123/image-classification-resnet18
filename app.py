@@ -4,9 +4,10 @@ from fastapi import UploadFile, File
 from predict import load_model_and_preprocess, predict_image
 from PIL import Image
 import torch, io
+import os
 
 # Rutas necesarias antes de cargar el modelo
-MODEL_PATH = "artifacts/model.pt"
+MODEL_PATH = os.getenv("MODEL_PATH", "artifacts/model.pt")
 CLASSES_PATH = "artifacts/class_names.json"
 PREPROCESS_PATH = "artifacts/preprocess.json"
 
@@ -26,10 +27,17 @@ model = None
 class_names = None
 transform = None
 
+def ensure_loaded():
+    global model, class_names, transform
+    if model is None:
+        model, class_names, transform = load_model_and_preprocess(
+            MODEL_PATH, CLASSES_PATH, PREPROCESS_PATH, device
+        )
 
 @app.on_event("startup")
 def load_assets():
     global model, class_names, transform
+    
     model, class_names, transform = load_model_and_preprocess(MODEL_PATH, 
                                                               CLASSES_PATH,
                                                               PREPROCESS_PATH,
@@ -45,6 +53,7 @@ def health():
 
 @app.post("/predict")
 async def predict_image_endpoint(file: UploadFile = File(...)):
+    ensure_loaded()
     img_bytes = await file.read()
     img = Image.open(io.BytesIO(img_bytes)).convert("RGB")
     
