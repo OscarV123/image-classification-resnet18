@@ -2,12 +2,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import UploadFile, File
 from predict import load_model_and_preprocess, predict_image
+from utils_model import ensure_file
 from PIL import Image
 import torch, io
 import os
 
 # Rutas necesarias antes de cargar el modelo
 MODEL_PATH = os.getenv("MODEL_PATH", "artifacts/model.pt")
+MODEL_URL = os.getenv("MODEL_URL")
 CLASSES_PATH = "artifacts/class_names.json"
 PREPROCESS_PATH = "artifacts/preprocess.json"
 
@@ -38,6 +40,9 @@ def ensure_loaded():
 def load_assets():
     global model, class_names, transform
     
+    if MODEL_URL:
+        ensure_file(MODEL_PATH, MODEL_URL)
+        
     model, class_names, transform = load_model_and_preprocess(MODEL_PATH, 
                                                               CLASSES_PATH,
                                                               PREPROCESS_PATH,
