@@ -2,10 +2,6 @@
 __pycache__/
 *.pyc
 
-# Pesos grandes
-*.pt
-*.pth
-
 # Entornos
 .venv/
 env/
