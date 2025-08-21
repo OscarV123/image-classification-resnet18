@@ -35,8 +35,8 @@ def load_assets():
                                                               PREPROCESS_PATH,
                                                               device)
 
-@app.get("/status")
-def get_status():
+@app.get("/health")
+def health():
     return {
         "status": "ok", 
         "device": str(device),
