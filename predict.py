@@ -8,19 +8,24 @@ def build_resnet18(num_classes):
     model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
     return model
 
-def load_model_and_preprocess(model_path, classes_path, preprocess_path, device):
-    # Cargar clases
-    with open(classes_path) as f:
+def load_model_and_preprocess(
+    model_path: str,            # TorchScript: artifacts/model.pt
+    classes_path: str,          # artifacts/class_names.json
+    preprocess_path: str,       # artifacts/preprocess.json
+    device: torch.device,
+    state_path: str | None = None,  # artifacts/model_state.pt (opcional)
+    build_model_fn=None,            # función que construya la arquitectura para state_dict
+):
+    with open(classes_path, "r", encoding="utf-8") as f:
         class_names = json.load(f)
 
-    # Cargar parámetros de preprocesamiento
-    with open(preprocess_path) as f:
+    with open(preprocess_path, "r", encoding="utf-8") as f:
         preprocess_params = json.load(f)
 
     transform = T.Compose([
-        T.Resize(preprocess_params['resize']),
+        T.Resize(preprocess_params["resize"]),
         T.ToTensor(),
-        T.Normalize(preprocess_params['normalize_mean'], preprocess_params['normalize_std'])
+        T.Normalize(preprocess_params["normalize_mean"], preprocess_params["normalize_std"]),
     ])
 
     try:
@@ -28,22 +33,33 @@ def load_model_and_preprocess(model_path, classes_path, preprocess_path, device)
         model.eval()
         return model, class_names, transform
     except Exception as e:
-        print(f"Error al cargar model: {e}")
-        print("Cargando modelo state dict en su lugar.")
-        pass
+        print(f"Error al cargar TorchScript: {e}")
+        print("Intentando cargar como state_dict...")
 
-    state = torch.load(model_path, map_location=device, weights_only=False)
-    
-    if isinstance(state, dict) and "state_dict" in state:
-        state = state["state_dict"]
-    
-    state = {k.replace("model.", ""): v for k, v in state.items()}
-    
-    model = build_resnet18(len(class_names))
-    model.load_state_dict(state)
-    model.eval()
+    if not state_path:
+        raise RuntimeError("No se proporcionó 'state_path' para cargar el state_dict.")
 
+    if build_model_fn is None:
+        raise RuntimeError("Se requiere 'build_model_fn(num_classes)' para reconstruir la arquitectura.")
+
+    state = torch.load(state_path, map_location=device)
+
+    if isinstance(state, dict) and any(k in state for k in ("state_dict", "model_state_dict")):
+        state = state.get("state_dict", state.get("model_state_dict"))
+
+    if isinstance(state, dict) and len(state) and next(iter(state)).startswith("model."):
+        state = {k.replace("model.", "", 1): v for k, v in state.items()}
+
+    model = build_model_fn(len(class_names))
+    missing, unexpected = model.load_state_dict(state, strict=False)
+    if missing:
+        print(f"[state_dict] Claves faltantes (primeras): {missing[:5]}")
+    if unexpected:
+        print(f"[state_dict] Claves inesperadas (primeras): {unexpected[:5]}")
+
+    model.to(device).eval()
     return model, class_names, transform
+
 
 def predict_image(img, transform, model, device, class_names):
     x = transform(img).unsqueeze(0).to(device)
