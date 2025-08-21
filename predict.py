@@ -1,7 +1,12 @@
 import torch
 import torchvision.transforms as T
-from PIL import Image
+from torchvision import models
 import json
+
+def build_resnet18(num_classes):
+    model = models.resnet18(weights=None)
+    model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
+    return model
 
 def load_model_and_preprocess(model_path, classes_path, preprocess_path, device):
     # Cargar clases
@@ -18,7 +23,9 @@ def load_model_and_preprocess(model_path, classes_path, preprocess_path, device)
         T.Normalize(preprocess_params['normalize_mean'], preprocess_params['normalize_std'])
     ])
 
-    model = torch.jit.load(model_path, map_location=device)
+    state = torch.load(model_path, map_location=device)
+    model = build_resnet18(len(class_names))
+    model.load_state_dict(state)
     model.eval()
 
     return model, class_names, transform
