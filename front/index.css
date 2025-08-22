@@ -21,16 +21,52 @@ body {
 }
 
 .dropzone {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: rgb(135, 135, 135);
-    color: black;
-    font-size: 1.2rem;
-    height: 60vh;
-    width: 45vw;
-    border-radius: 1.25rem;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(145, 145, 145);
+  color: black;
+  height: 60vh;
+  width: 100%;
+  border-radius: 1.25rem;
+  align-items: center;
+
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.dropzone { position: relative; overflow: hidden; }
+
+.dz-thumbs {
+  position: absolute;
+  inset: 0;
+  padding: 1rem 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: .6rem;
+  opacity: .60;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.dz-thumbs img.dz-thumb {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: .5rem;
+  border: 1px solid rgba(0,0,0,.15);
+  box-shadow: 0 1px 2px rgba(0,0,0,.12) inset;
+  filter: saturate(0.9);
+}
+
+.dropzone.dragover .dz-thumbs { opacity: .28; }
+
+.dropzone > p { position: relative; z-index: 2; }
+
+.dropzone.dragover {
+  opacity: 0.7;
+  border: 3px dashed #2ea44f;
+  background-color: rgba(116, 116, 116, 0.8);
 }
 
 .botones {
@@ -150,9 +186,34 @@ body {
   border: 1px solid rgba(255,255,255,0.08);
 }
 
+
+.pred-list { flex: 1; }
+
+.side-footer {
+  display: flex;
+  justify-content: flex-end;  
+  margin-top: .75rem;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #eaeaea;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .pred-meta { display: flex; flex-direction: column; gap: .15rem; }
 .pred-name { font-weight: 600; color: #f5f5f5; }
-.pred-class { color: #9ed7ac; }
+.pred-class { color: #2ea44f; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

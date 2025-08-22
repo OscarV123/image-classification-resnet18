@@ -7,69 +7,61 @@
     <link rel="stylesheet" href="index.css" />
 </head>
 <body>
-  <div class="title">
-    <h1>Resnet18 CIFAR-10 Image Classifier</h1>
-  </div>
+    <div class="title">
+        <h1>Clasificador de imágenes entrenado con CIFAR-10 y transfer learning de Resnet18</h1>
+    </div>
 
-  <div class="layout">
-    <!-- COLUMNA IZQUIERDA -->
-    <section class="container-drop">
-        <div
-            id="dropzone"
-            class="dropzone"
-            tabindex="0"
-            role="button"
-            aria-describedby="dz-help"
-            aria-controls="fileList">
-            <p><strong>Arrastra y suelta</strong> aquí una o varias imágenes</p>
-            <p id="dz-help">También puedes elegir archivos individuales o seleccionar una carpeta completa.</p>
-        </div>
-
-        <div class="botones">
-            <div class="boton">
-            <label for="fileInput" class="btn">Elegir imágenes</label>
-            <input id="fileInput" type="file" accept="image/*" multiple hidden />
+    <div class="layout">
+        <!-- COLUMNA IZQUIERDA -->
+        <section class="container-drop">
+            <div
+                id="dropzone"
+                class="dropzone"
+                tabindex="0"
+                role="button"
+                aria-describedby="dz-help"
+                aria-controls="fileList">
+                <p><strong>Arrastra y suelta</strong> aquí una o varias imágenes</p>
+                <p id="dz-help">También puedes elegir archivos individuales o seleccionar una carpeta completa.</p>
+                <div id="dzThumbs" class="dz-thumbs" aria-hidden="true"></div>
             </div>
-            <div class="boton">
-            <label for="folderInput" class="btn btn-secondary">Seleccionar carpeta</label>
-            <input id="folderInput" type="file" webkitdirectory directory mozdirectory accept="image/*" hidden />
+
+            <div class="botones">
+                <div class="boton">
+                <label for="fileInput" class="btn">Elegir imágenes</label>
+                <input id="fileInput" type="file" accept="image/*" multiple hidden />
+                </div>
+                <div class="boton">
+                <label for="folderInput" class="btn btn-secondary">Seleccionar carpeta</label>
+                <input id="folderInput" type="file" webkitdirectory directory mozdirectory accept="image/*" hidden />
+                </div>
             </div>
-        </div>
 
-        <ul id="fileList" class="file-list" aria-live="polite"></ul>
-        <noscript><p>Activa JavaScript para poder arrastrar y soltar archivos o seleccionar carpetas.</p></noscript>
-    </section>
+            <ul id="fileList" class="file-list" aria-live="polite"></ul>
+            <noscript><p>Activa JavaScript para poder arrastrar y soltar archivos o seleccionar carpetas.</p></noscript>
+        </section>
 
-    <!-- COLUMNA DERECHA: PANEL -->
-    <aside class="sidebar" aria-label="Resultados">
-        <div class="side-header">
-            <h2>Resultados</h2>
-        </div>
-      
-        <div class="search">
-            <label for="q" class="sr-only">Buscar</label>
-            <input id="q" type="search" placeholder="Buscar imagen o clase…" />
-        </div>
+        <!-- COLUMNA DERECHA: PANEL -->
+        <aside class="sidebar" aria-label="Resultados">
+            <div class="side-header">
+                <h2>Resultados</h2>
+            </div>
         
-        <ul class="pred-list">
-            <!-- Ejemplos (estáticos) -->
-            <li class="pred-item">
-            <img src="https://via.placeholder.com/44x44" alt="miniatura imagen 1" />
-            <div class="pred-meta">
-                <span class="pred-name">imagen_001.jpg</span>
-                <span class="pred-class">→ perro (0.92)</span>
+            <div class="search">
+                <label for="q" class="sr-only">Buscar</label>
+                <input id="q" type="search" placeholder="Buscar imagen o clase…" />
             </div>
-            </li>
-            <li class="pred-item">
-            <img src="https://via.placeholder.com/44x44" alt="miniatura imagen 2" />
-            <div class="pred-meta">
-                <span class="pred-name">img_car_12.png</span>
-                <span class="pred-class">→ auto (0.87)</span>
+            
+            <ul class="pred-list">
+                <!-- Más items se inyectarán con JS -->
+            </ul>
+            <div class="side-footer">
+                <button id="btnClear" class="btn btn-ghost" type="button" aria-label="Limpiar resultados">
+                    Limpiar
+                </button>
             </div>
-            </li>
-            <!-- Más items se inyectarán con JS -->
-        </ul>
-    </aside>
-  </div>
+        </aside>
+    </div>
+<script src="index.js"></script>
 </body>
 </html>
