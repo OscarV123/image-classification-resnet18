@@ -41,7 +41,12 @@ def ensure_loaded():
 
 @app.on_event("startup")
 def on_startup():
-    print("App started. Modelo aún no cargado (lazy load).")
+    ensure_loaded() # Carga ansiosa
+    #warmup
+    dummy = torch.zeros(1, 3, 224, 224)
+    with torch.no_grad():
+        _ = model(dummy.to(device))
+
 
 @app.get("/health")
 def health():
@@ -53,7 +58,6 @@ def health():
 
 @app.post("/predict")
 async def predict_image_endpoint(file: UploadFile = File(...)):
-    ensure_loaded()
     img = Image.open(io.BytesIO(await file.read())).convert("RGB")
     with torch.no_grad():
         label, probabilities = predict_image(img, transform, model, device, class_names)

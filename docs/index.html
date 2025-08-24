@@ -28,17 +28,19 @@
 
             <div class="botones">
                 <div class="boton">
-                <label for="fileInput" class="btn">Elegir imágenes</label>
-                <input id="fileInput" type="file" accept="image/*" multiple hidden />
+                    <label for="fileInput" class="btn">Elegir imágenes</label>
+                    <input id="fileInput" type="file" accept="image/*" multiple hidden />
                 </div>
+
                 <div class="boton">
-                <label for="folderInput" class="btn btn-secondary">Seleccionar carpeta</label>
-                <input id="folderInput" type="file" webkitdirectory directory mozdirectory accept="image/*" hidden />
+                    <label for="folderInput" class="btn btn-secondary">Seleccionar carpeta</label>
+                    <input id="folderInput" type="file" webkitdirectory directory mozdirectory accept="image/*" hidden />
                 </div>
+
+                <button id="btnPredict" class="btn btn-primary" type="button">Predecir</button>
             </div>
 
             <ul id="fileList" class="file-list" aria-live="polite"></ul>
-            <noscript><p>Activa JavaScript para poder arrastrar y soltar archivos o seleccionar carpetas.</p></noscript>
         </section>
 
         <!-- COLUMNA DERECHA: PANEL -->
