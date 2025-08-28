@@ -87,8 +87,8 @@
 <script src="index.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-    const note = document.getElementById("gh-note");
-    if (!note) return;
+        const note = document.getElementById("gh-note");
+        if (!note) return;      
         if (location.hostname === "oscarv123.github.io") {
             note.hidden = false;
 
@@ -96,14 +96,12 @@
             const list = hint?.querySelector(".hint-list");
             if (list) {
             const title = document.createElement("div");
-            title.className = "hint-title";
-            title.textContent = "Este clasificador ha sido entrenado para reconocer 10 clases (CIFAR10):";
-            hint.insertBefore(title, list);
+                hint.insertBefore(title, list);
             }
         } 
         else {
             note.remove();
-        }
+        }                           
     });
 </script>
 </body>
