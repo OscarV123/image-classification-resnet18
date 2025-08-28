@@ -1,23 +1,20 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: #13111C;
-    color: white;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  background-color: #13111C;
+  color: white;
 }
 
 .title {
-    margin-top: 5rem;
+    margin-top: 1.5rem;
     margin-left: 6rem;
     color: #fff;
-}
-
-.container-drop {
-    margin-left: 6rem;
-    margin-top: 3rem;
 }
 
 .dropzone {
@@ -106,7 +103,7 @@ body {
   -webkit-mask-composite: xor;
           mask-composite: exclude;
   mask-composite: exclude;
-  animation: dz-dash 1.4s linear infinite;
+  animation: dz-dash 3.4s linear infinite;
   pointer-events: none;
   opacity: 1;
 }
@@ -193,9 +190,46 @@ body {
   background: rgba(255,255,255,0.15);
 }
 
-.title { margin-top: 3rem; margin-left: 6rem; }
 .container-drop { margin: 0; }
 .dropzone { height: 60vh; width: 100%; }
+
+.gh-note {
+  font-size: 1rem;
+  color: #cfcfcf ;
+}
+
+.hint {
+  margin-top: 0.7rem;
+}
+
+.hint-title {
+  font-size: 1rem;
+  color: #cfcfcf ;
+}
+
+.hint-list {
+  margin-top: 0.5rem;
+  padding-left: 1.2rem;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem 2rem;
+}
+
+.hint-list li {
+  font-size: 1rem;
+  color: #cfcfcf;
+}
+
+.enlace {
+  color: #4da6ff;
+  text-decoration: none;
+}
+
+.enlace:hover {
+  color: #1e90ff;
+  text-decoration: underline;
+}
 
 .sidebar {
   background: #1a1826;

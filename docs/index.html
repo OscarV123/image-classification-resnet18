@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Transfer Learning y Fine Tuning</title>
+    <title>Clasificador de imagenes</title>
     <link rel="stylesheet" href="index.css" />
+    <link rel="icon" href="icono.ico" />
 </head>
 <body>
     <div class="title">
-        <h1>Clasificador de imágenes entrenado con CIFAR-10 y transfer learning de Resnet18</h1>
+        <h1>Clasificador de imágenes entrenado con transfer learning de Resnet18</h1>
     </div>
 
     <div class="layout">
@@ -39,7 +40,26 @@
 
                 <button id="btnPredict" class="btn btn-primary" type="button">Predecir</button>
             </div>
-
+            <div class="hint">
+                <small id="gh-note" class="gh-note">
+                    Las demoras en la predicción no dependen de la IA, sino del servidor donde está alojado el backend (Railway, plan gratuito con 1 vCPU).<br>
+                    Si deseas ver el verdadero rendimiento del modelo, sigue las instrucciones del
+                    <a class="enlace" href="https://github.com/OscarV123/image-classification-resnet18/blob/main/README.md" target="_blank" rel="noopener noreferrer">README.md</a>.
+                </small>
+                <div class="hint-title">Este clasificador ha sido entrenado para reconocer 10 clases (CIFAR10):</div>
+                <ul class="hint-list">
+                    <li>1. aviones</li>
+                    <li>6. perros</li>
+                    <li>2. carros</li>
+                    <li>7. ranas</li>
+                    <li>3. aves</li>
+                    <li>8. caballos</li>
+                    <li>4. gatos</li>
+                    <li>9. barcos</li>
+                    <li>5. ciervos</li>
+                    <li>10. camiones</li>
+                </ul>
+            </div>
             <ul id="fileList" class="file-list" aria-live="polite"></ul>
         </section>
 
@@ -65,5 +85,26 @@
         </aside>
     </div>
 <script src="index.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const note = document.getElementById("gh-note");
+    if (!note) return;
+        if (location.hostname === "oscarv123.github.io") {
+            note.hidden = false;
+
+            const hint = note.closest(".hint");
+            const list = hint?.querySelector(".hint-list");
+            if (list) {
+            const title = document.createElement("div");
+            title.className = "hint-title";
+            title.textContent = "Este clasificador ha sido entrenado para reconocer 10 clases (CIFAR10):";
+            hint.insertBefore(title, list);
+            }
+        } 
+        //else {
+        //    note.remove(); // o deja hidden = true
+        //}
+    });
+</script>
 </body>
 </html>
