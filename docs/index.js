@@ -70,6 +70,25 @@ function renderListItem(file) {
 }
 
 // Miniaturas en el dropzone
+const CELL = 88;
+const GAP  = 10;
+
+function capacityFor(container) {
+  const r = container.getBoundingClientRect();
+  const cols = Math.max(1, Math.floor((r.width  + GAP) / (CELL + GAP)));
+  const rows = Math.max(1, Math.floor((r.height + GAP) / (CELL + GAP)));
+  return cols * rows;
+}
+
+function trimToCapacity() {
+  const cap = capacityFor(dzThumbs);
+  while (dzThumbs.children.length > cap) {
+    const last = dzThumbs.lastElementChild;
+    try { if (last.src.startsWith("blob:")) URL.revokeObjectURL(last.src); } catch {}
+    last.remove();
+  }
+}
+
 function addThumb(file) {
   const url = URL.createObjectURL(file);
   const img = document.createElement("img");
@@ -77,12 +96,7 @@ function addThumb(file) {
   img.src = url;
   img.alt = file.name;
   dzThumbs.prepend(img);
-
-  while (dzThumbs.children.length > MAX_THUMBS) {
-    const last = dzThumbs.lastElementChild;
-    try { if (last.src.startsWith("blob:")) URL.revokeObjectURL(last.src); } catch {}
-    last.remove();
-  }
+  trimToCapacity();
 }
 
 // ==== PREDICCIÓN ====
@@ -135,7 +149,7 @@ async function sendToBackend(item) {
     const data = await res.json();
 
     const clase = data.prediction ?? "desconocido";
-    
+
     let conf;
     if (data.probabilities && typeof data.probabilities === "object") {
       conf = data.probabilities[clase];
@@ -147,9 +161,9 @@ async function sendToBackend(item) {
     const confPct = typeof conf === "number" ? Math.round(conf * 100) : 0;
 
     // color por rango
-    let color = "#c22";                     // 0–50
-    if (confPct > 80) color = "#2ea44f";    // 81–100
-    else if (confPct > 50) color = "#e6c229"; // 51–80
+    let color = "#c22";
+    if (confPct > 80) color = "#2ea44f";
+    else if (confPct > 50) color = "#e6c229";
 
     span.textContent = `${clase} (seguridad: ${confPct}%)`;
     span.style.color = color;
