@@ -62,3 +62,6 @@ async def predict_image_endpoint(file: UploadFile = File(...)):
     with torch.no_grad():
         label, probabilities = predict_image(img, transform, model, device, class_names)
     return {"filename": file.filename, "prediction": label, "probabilities": probabilities}
+
+
+

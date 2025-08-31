@@ -118,11 +118,24 @@ async function sendToBackend(item) {
   formData.append("file", item.file);
 
   try {
-    const res = await fetch(PREDICT_URL, { method: "POST", body: formData });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    let res;
+
+    if (location.hostname === "oscarv123.github.io") {
+
+      res = await fetch(PREDICT_URL, { method: "POST", body: formData });
+
+    } else {
+
+      const LOCAL_PREDICT = "http://127.0.0.1:8000/predict";
+      res = await fetch(LOCAL_PREDICT, { method: "POST", body: formData });
+    }
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);      
     const data = await res.json();
 
     const clase = data.prediction ?? "desconocido";
+    
     let conf;
     if (data.probabilities && typeof data.probabilities === "object") {
       conf = data.probabilities[clase];
@@ -142,13 +155,17 @@ async function sendToBackend(item) {
     span.style.color = color;
     span.classList.remove("is-run", "is-wait");
     item.status = "done";
+
   } catch (err) {
+
     console.error("Error:", err);
     span.textContent = "Error al clasificar";
     span.style.color = "#c22";
     span.classList.remove("is-run", "is-wait");
     item.status = "error";
+
   } finally {
+
     updateClearState();
   }
 }
