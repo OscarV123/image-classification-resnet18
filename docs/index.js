@@ -40,13 +40,17 @@ function unlockInputs() {
 }
 
 // ==== MANEJO DE ARCHIVOS ====
+const isLocked = () => dropzone.classList.contains("disabled");
+
 function handleFiles(fileList) {
+  if (isLocked()) return;  // evita aceptar archivos si está bloqueado
+
   const files = Array.from(fileList);
   for (let i = files.length - 1; i >= 0; i--) {
     const file = files[i];
     if (!file.type.startsWith("image/")) continue;
-    const li = renderListItem(file);       // UI derecha
-    addThumb(file);                         // miniatura decorativa en dropzone
+    const li = renderListItem(file);
+    addThumb(file);
     items.push({ id: nextId++, file, li, status: "waiting" });
   }
   updateClearState();
@@ -205,17 +209,24 @@ searchInput.addEventListener("input", e => {
 // ==== DRAG & DROP ====
 ["dragenter","dragover"].forEach(evt =>
   dropzone.addEventListener(evt, e => {
+    if (isLocked()) return;
     e.preventDefault();
     dropzone.classList.add("dragover");
   })
 );
+
 ["dragleave","drop"].forEach(evt =>
   dropzone.addEventListener(evt, e => {
+    if (isLocked()) return;
     e.preventDefault();
     dropzone.classList.remove("dragover");
   })
 );
-dropzone.addEventListener("drop", e => handleFiles(e.dataTransfer.files));
+
+dropzone.addEventListener("drop", e => {
+  if (isLocked()) return;
+  handleFiles(e.dataTransfer.files);
+});
 
 // ==== INPUTS ====
 fileInput.addEventListener("change", e => {

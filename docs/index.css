@@ -172,9 +172,9 @@ body {
   cursor: not-allowed;
 }
 
-.dropzone.disabled {
+.dropzone.disabled,
+.dropzone.disabled .dz-thumbs {
   pointer-events: none;
-  opacity: 0.5;
 }
 
 .layout {
