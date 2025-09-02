@@ -47,6 +47,6 @@ Puedes descargarlo en el botón de "<>code" al inicio del repositorio.
 En un cmd escribe lo siguiente: *pip install -r requirements.txt*.
 
 ### 3. Ejecuta main.py
-Hazlo desde tu editor de código o escribiendo en el cmd *python main.py*.
+Hazlo desde tu editor de código o escribiendo en el cmd: *python main.py*.
 
 # ¡LISTO!
