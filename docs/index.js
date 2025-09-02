@@ -110,7 +110,7 @@ btnPredict.addEventListener("click", async() => {
   for (const it of batch) {
     it.status = "running";
     const span = it.li.querySelector(".pred-class");
-    span.textContent = "Clasificando…";
+    span.textContent = "Esperando respuesta del backend...";
     span.classList.remove("is-wait");
     span.classList.add("is-run");
   }
@@ -132,35 +132,44 @@ async function sendToBackend(item) {
   formData.append("file", item.file);
 
   try {
+    const url = (location.hostname === "oscarv123.github.io")
+      ? PREDICT_URL
+      : "http://127.0.0.1:8000/predict";
 
-    let res;
+    const res = await fetch(url, { method: "POST", body: formData });
 
-    if (location.hostname === "oscarv123.github.io") {
+    let body = null;
+    try { body = await res.json(); } catch {}
 
-      res = await fetch(PREDICT_URL, { method: "POST", body: formData });
-
-    } else {
-
-      const LOCAL_PREDICT = "http://127.0.0.1:8000/predict";
-      res = await fetch(LOCAL_PREDICT, { method: "POST", body: formData });
+    if (!body) {
+      span.textContent = "Error al clasificar";
+      span.style.color = "#c22";
+      span.classList.remove("is-run", "is-wait");
+      item.status = "error";
+      return;
     }
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);      
-    const data = await res.json();
+    if (body.status === "error") {
+      span.textContent = body.message || "Error al clasificar";
+      span.style.color = "#c22";
+      span.classList.remove("is-run", "is-wait");
+      item.status = "error";
+      return;
+    }
 
-    const clase = data.prediction ?? "desconocido";
+    const { prediction, probabilities } = body.data || {};
+    const clase = prediction ?? "desconocido";
 
-    let conf;
-    if (data.probabilities && typeof data.probabilities === "object") {
-      conf = data.probabilities[clase];
+    let conf = 0;
+    if (probabilities && typeof probabilities === "object") {
+      conf = probabilities[clase];
       if (conf == null) {
-        const vals = Object.values(data.probabilities).filter(v => typeof v === "number");
+        const vals = Object.values(probabilities).filter(v => typeof v === "number");
         if (vals.length) conf = Math.max(...vals);
       }
     }
     const confPct = typeof conf === "number" ? Math.round(conf * 100) : 0;
 
-    // color por rango
     let color = "#c22";
     if (confPct > 80) color = "#2ea44f";
     else if (confPct > 50) color = "#e6c229";
@@ -171,18 +180,17 @@ async function sendToBackend(item) {
     item.status = "done";
 
   } catch (err) {
-
     console.error("Error:", err);
     span.textContent = "Error al clasificar";
     span.style.color = "#c22";
     span.classList.remove("is-run", "is-wait");
     item.status = "error";
-
   } finally {
-
     updateClearState();
   }
 }
+
+
 
 // ==== BÚSQUEDA ====
 searchInput.addEventListener("input", e => {
@@ -210,8 +218,15 @@ searchInput.addEventListener("input", e => {
 dropzone.addEventListener("drop", e => handleFiles(e.dataTransfer.files));
 
 // ==== INPUTS ====
-fileInput.addEventListener("change", e => handleFiles(e.target.files));
-folderInput.addEventListener("change", e => handleFiles(e.target.files));
+fileInput.addEventListener("change", e => {
+  handleFiles(e.target.files);
+  e.target.value = "";
+});
+
+folderInput.addEventListener("change", e => {
+  handleFiles(e.target.files);
+  e.target.value = "";
+});
 
 // ==== CLEAR ====
 function updateClearState() {
