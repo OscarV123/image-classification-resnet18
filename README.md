@@ -41,7 +41,7 @@ Mi objetivo al crear tres arquitecturas distintas es comparar su rendimiento ind
 
 ## Pasos para ejecutar el proyecto en local
 ### 1. Descargar el .zip o clonar el repositorio y abrir en tu editor de código
-Puedes descargarlo en el botón de <code> al inicio del repositorio.
+Puedes descargarlo en el botón de "<>code" al inicio del repositorio.
 
 ### 2. Instalar las librerías necesarias
 En un cmd escribe lo siguiente: *pip install -r requirements.txt*.
