@@ -44,9 +44,9 @@ Mi objetivo al crear tres arquitecturas distintas es comparar su rendimiento ind
 Puedes descargarlo en el botón de "<>code" al inicio del repositorio.
 
 ### 2. Instalar las librerías necesarias
-En un cmd escribe lo siguiente: *pip install -r requirements.txt*
+En la terminal escribe lo siguiente: *pip install -r requirements.txt*
 
 ### 3. Ejecuta main.py
-Hazlo desde tu editor de código o escribiendo en el cmd: *python main.py*
+Hazlo desde tu editor de código o escribiendo en la terminal: *python main.py*
 
 # ¡LISTO!
