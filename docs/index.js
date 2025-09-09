@@ -104,36 +104,50 @@ function addThumb(file) {
 }
 
 // ==== PREDICCIÓN ====
-btnPredict.addEventListener("click", async() => {
+btnPredict.addEventListener("click", async () => {
   const batch = items.filter(it => it.status === "waiting");
   if (batch.length === 0) return;  // no hagas nada si no hay pendientes
 
   // bloquear y marcar "clasificando"
   lockInputs();
   btnPredict.disabled = true;
+
   for (const it of batch) {
     it.status = "running";
     const span = it.li.querySelector(".pred-class");
-    span.textContent = "Esperando respuesta del backend...";
+
+    it._dots = 0;
+    span.textContent = "Esperando al backend";
+    it.timer = setInterval(() => {
+      it._dots = (it._dots + 1) % 4;
+      span.textContent = "Esperando al backend" + ".".repeat(it._dots);
+    }, 250);
+
     span.classList.remove("is-wait");
     span.classList.add("is-run");
   }
 
-  // enviar cada uno
   for (let i = batch.length - 1; i >= 0; i--) {
-  const it = batch[i];
-  await sendToBackend(it);
-  await new Promise(r => setTimeout(r, 100));
-}
+    const it = batch[i];
+    await sendToBackend(it);
+    await new Promise(r => setTimeout(r, 100));
+  }
 
-  // No re-habilitamos inputs automáticamente (tu UX); se re-habilitan con "Limpiar"
   updatePredictState();
 });
+
 
 async function sendToBackend(item) {
   const span = item.li.querySelector(".pred-class");
   const formData = new FormData();
   formData.append("file", item.file);
+
+  const stopSpinner = () => {
+    if (item.timer) {
+      clearInterval(item.timer);
+      item.timer = null;
+    }
+  };
 
   try {
     const url = (location.hostname === "oscarv123.github.io")
@@ -146,6 +160,7 @@ async function sendToBackend(item) {
     try { body = await res.json(); } catch {}
 
     if (!body) {
+      stopSpinner();
       span.textContent = "Error al clasificar";
       span.style.color = "#c22";
       span.classList.remove("is-run", "is-wait");
@@ -154,6 +169,7 @@ async function sendToBackend(item) {
     }
 
     if (body.status === "error") {
+      stopSpinner();
       span.textContent = body.message || "Error al clasificar";
       span.style.color = "#c22";
       span.classList.remove("is-run", "is-wait");
@@ -161,7 +177,7 @@ async function sendToBackend(item) {
       return;
     }
 
-    const { prediction, probabilities } = body.data || {};
+    const { prediction, probabilities } = body.data || body || {};
     const clase = prediction ?? "desconocido";
 
     let conf = 0;
@@ -178,6 +194,7 @@ async function sendToBackend(item) {
     if (confPct > 80) color = "#2ea44f";
     else if (confPct > 50) color = "#e6c229";
 
+    stopSpinner();
     span.textContent = `${clase} (seguridad: ${confPct}%)`;
     span.style.color = color;
     span.classList.remove("is-run", "is-wait");
@@ -185,6 +202,7 @@ async function sendToBackend(item) {
 
   } catch (err) {
     console.error("Error:", err);
+    stopSpinner();
     span.textContent = "Error al clasificar";
     span.style.color = "#c22";
     span.classList.remove("is-run", "is-wait");
@@ -193,8 +211,6 @@ async function sendToBackend(item) {
     updateClearState();
   }
 }
-
-
 
 // ==== BÚSQUEDA ====
 searchInput.addEventListener("input", e => {
