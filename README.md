@@ -36,17 +36,17 @@ Mi objetivo al crear tres arquitecturas distintas es comparar su rendimiento ind
 - **Mejor precisión en validación**
 - **Precisión en prueba**
 
-## Versión de Python usada
-- Python 3.13.1
+## Versión de Python necesaria
+- Python >= 3.13.1
 
 ## Pasos para ejecutar el proyecto en local
 ### 1. Descargar el .zip o clonar el repositorio y abrir en tu editor de código
 Puedes descargarlo en el botón de "<>code" al inicio del repositorio.
 
 ### 2. Instalar las librerías necesarias
-En un cmd escribe lo siguiente: *pip install -r requirements.txt*.
+En un cmd escribe lo siguiente: *pip install -r requirements.txt*
 
 ### 3. Ejecuta main.py
-Hazlo desde tu editor de código o escribiendo en el cmd *python main.py*.
+Hazlo desde tu editor de código o escribiendo en el cmd: *python main.py*
 
 # ¡LISTO!
