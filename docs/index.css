@@ -10,9 +10,9 @@ body {
 }
 
 .title {
-    margin-top: 1.5rem;
-    margin-left: 6rem;
-    color: #fff;
+  margin-top: 1.5rem;
+  margin-left: 6rem;
+  color: #fff;
 }
 
 .dropzone {
@@ -185,6 +185,10 @@ body {
   position: relative;
 }
 
+.layout p {
+    text-align: center;
+}
+
 .layout::before {
   content: "";
   position: absolute;
@@ -331,4 +335,120 @@ body {
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+
+
+/* Breakpoint para teléfonos medianos (361px a 768px) */
+@media (max-width: 768px) {
+
+  .title{
+    margin: 0;
+    padding: 16px 16px 10px 30px;
+    text-align: left;
+  }
+
+  .title h1{
+    margin: 0;
+    font-size: 1.20rem;
+    line-height: 1.2;
+    max-width: 35ch;
+    letter-spacing: -0.01em;
+  }
+
+  .layout {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 1.5rem;
+  }
+
+  .layout p {
+    text-align: center;
+  }
+
+  .layout::before {
+    display: none;
+  }
+  
+  .dropzone {
+    height: 40vh;
+    width: 100%;
+  }
+
+    .botones{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    align-items: stretch;
+  }
+
+    .boton{
+    width: 100%;
+  }
+
+    .botones .btn,
+  .botones button.btn{
+    width: 100%;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1;
+    text-align: center;
+    white-space: normal;
+  }
+ 
+  .sidebar {
+    min-height: auto;
+  }
+}
+
+/* TABLETS (769px a 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  .title{
+    margin: 0;
+    padding: 20px 32px 10px 32px;
+    text-align: left;
+  }
+
+  .title h1{
+    font-size: 1.6rem;
+    line-height: 1.15;
+    max-width: none;
+  }
+
+  .layout{
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.5rem;
+    margin: 1.5rem 2rem;
+    align-items: start;
+  }
+
+  .layout::before{
+    left: calc(100% - 320px - .75rem);
+  }
+
+  .dropzone{
+    height: 55vh;
+  }
+
+  .botones{
+    display: flex;
+    gap: .75rem;
+  }
+
+  .btn-primary{
+    margin-left: auto;
+  }
+
+  .sidebar{
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
