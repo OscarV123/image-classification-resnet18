@@ -46,7 +46,7 @@ The main objective of training three different architectures was to compare thei
 You can download it by click on de "<>code" button at the top of the repository.
 
 ### 2. Install the necessary libraries
-On a terminar, type the following command: *pip install -r requirements.txt*
+On a terminal, type the following command: *pip install -r requirements.txt*
 
 ### 3. Run main.py
 Do this from your code editor or by typing in the terminal: *python main.py*
