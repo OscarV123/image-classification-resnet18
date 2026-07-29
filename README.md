@@ -1,7 +1,5 @@
-# ResNet18 CIFAR-10 Image Classifier | Full-Stack ML Web App
-A complete full-stack image classification web application that uses transfer learning and fine-tuning on a pre-trained ResNet18 model to classify the 10 classes of the CIFAR-10 dataset
-
-**Live Demo -> [https://oscarv123.github.io/image-classification-resnet18/]**
+# ResNet18 CIFAR-10 Image Classifier | Full-Stack ML Local App
+A complete full-stack image classification application that uses transfer learning and fine-tuning on a pre-trained ResNet18 model to classify the 10 classes of the CIFAR-10 dataset
 
 ## Project Structure
 - `artifacts/`: Saved model files and metadata (`model.pt`, `model_state.pt`, `class_names.json`, `preprocess.json`).
